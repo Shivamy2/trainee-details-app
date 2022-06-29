@@ -21,6 +21,8 @@
 }
 
 .detail-table__body {
+    display: block;
+    overflow: auto;
     font-size: 0.8rem;
 }
 
@@ -39,6 +41,24 @@
 
 .table__styling {
     overflow-x: auto;
+}
+
+
+/* tbody::-webkit-scrollbar {
+    display: none;
+} */
+
+.table__styling__row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table__textarea {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    resize: none;
 }
 
 @media only screen and (min-width: 768px) {

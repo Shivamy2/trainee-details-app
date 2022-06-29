@@ -45,7 +45,7 @@
     {
         "name": "Himanshu Singh",
         "type": "backend",
-        "projAlc": "0",
+        "projAlc": "1",
         "skills": {
             "professional": ["quick learner", "problem solving", "critical thinking"],
             "technical": ["html/css", "object oriented programming", "javascript", "c/c++", "git/github"]

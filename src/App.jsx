@@ -9,10 +9,10 @@ import { filter } from "lodash";
 const App = () => {
   const [userData, setUserData] = useState(data || []);
   const frontendData = filter(userData, (item) => {
-    return item.type === "frontend";
+    return item.projAlc === "0" && item.type === "frontend";
   });
   const backendData = filter(userData, (item) => {
-    return item.type === "backend";
+    return item.projAlc === "0" && item.type === "backend";
   });
   const projAllocated = filter(userData, (item) => {
     return item.projAlc === "1";
