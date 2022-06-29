@@ -1,56 +1,32 @@
 import { memo } from "react";
 import Table from "react-bootstrap/Table";
-import { AiFillInfoCircle } from "react-icons/ai";
-import { BsDownload } from "react-icons/bs";
 import { tableHeadings } from "../constants/constant";
+import TableRow from "./TableRow";
 
-const DetailTable = ({ className, data }) => {
+const DetailTable = ({ className, data, title }) => {
   const headingValues = tableHeadings;
   return (
     <div className={className}>
-      <h2 className="text-primary fw-bold fs-2">Frontend</h2>
-      <div style={{ overflowX: "auto" }}>
+      <h2 className="text-primary fw-bold fs-3 ms-2">{title}</h2>
+      <div className="table__styling">
         <Table striped bordered hover className="text-center">
-          <thead className="detail-table__heading">
+          <thead className="detail-table__heading bg-danger border-danger text-white">
             <tr>
-              {headingValues?.map((item) => (
-                <th>{item}</th>
+              {headingValues?.map((item, index) => (
+                <th key={index}>{item}</th>
               ))}
             </tr>
           </thead>
           <tbody className="detail-table__body">
-            <tr>
-              <td>1</td>
-              <td>Shivam Yadav</td>
-              <td>No</td>
-              <td>
-                <AiFillInfoCircle color="green" size={18} />
-              </td>
-              <td>
-                <textarea
-                  style={{
-                    outline: "none",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    resize: "none",
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") console.log("Enter pressed");
-                  }}
-                  placeholder="NA"
-                  name=""
-                  id=""
-                  cols="20"
-                  rows="1"
-                  value={"This is textarea"}
-                />
-              </td>
-              <td>
-                <a href="www.google.com" download>
-                  <BsDownload color="blue" size={20} />
-                </a>
-              </td>
-            </tr>
+            {data?.length > 0 ? (
+              data?.map((item, index) => (
+                <TableRow key={index} data={item} sno={index} />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={tableHeadings.length}>No Details Found</td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
