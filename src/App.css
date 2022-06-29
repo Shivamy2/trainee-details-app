@@ -43,10 +43,9 @@
     overflow-x: auto;
 }
 
-
-/* tbody::-webkit-scrollbar {
-    display: none;
-} */
+.table__styling__style {
+    width: 965px;
+}
 
 .table__styling__row {
     display: table;

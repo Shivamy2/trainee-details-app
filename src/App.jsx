@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { data } from "./constants/constant";
 import DetailTable from "./components/DetailTable";
 import NavBar from "./components/NavBar";
@@ -8,15 +8,27 @@ import { filter } from "lodash";
 
 const App = () => {
   const [userData, setUserData] = useState(data || []);
-  const frontendData = filter(userData, (item) => {
-    return item.projAlc === "0" && item.type === "frontend";
-  });
-  const backendData = filter(userData, (item) => {
-    return item.projAlc === "0" && item.type === "backend";
-  });
-  const projAllocated = filter(userData, (item) => {
-    return item.projAlc === "1";
-  });
+  const frontendData = useMemo(
+    () =>
+      filter(userData, (item) => {
+        return item.projAlc === "0" && item.type === "frontend";
+      }),
+    [userData]
+  );
+  const backendData = useMemo(
+    () =>
+      filter(userData, (item) => {
+        return item.projAlc === "0" && item.type === "backend";
+      }),
+    [userData]
+  );
+  const projAllocated = useMemo(
+    () =>
+      filter(userData, (item) => {
+        return item.projAlc === "1";
+      }),
+    [userData]
+  );
   console.log("details", frontendData, backendData, projAllocated);
   useEffect(() => {
     if (!data) {

@@ -8,20 +8,24 @@ const DetailTable = ({ className, data, title }) => {
   const [tableHeight, setTableHeight] = useState(200);
   const tableRef = useRef(null);
   useEffect(() => {
-    let sum = 0;
+    let tableBodyHeight = 0;
     let children = tableRef.current?.childNodes;
     for (var i = 0; i < 5; ++i) {
-      sum += children[i]?.clientHeight;
+      tableBodyHeight += children[i]?.clientHeight;
     }
-    setTableHeight(sum);
-    console.log(tableRef);
+    setTableHeight(tableBodyHeight);
   }, []);
   console.log("table height", tableHeight);
   return (
     <div className={className}>
       <h2 className="text-primary fw-bold fs-3 ms-2">{title}</h2>
       <div className="table__styling">
-        <Table striped bordered hover className="text-center">
+        <Table
+          striped
+          bordered
+          hover
+          className="text-center table__styling__style"
+        >
           <thead className="detail-table__heading bg-danger border-danger text-white table__styling__row">
             <tr>
               {headingValues?.map((item, index) => (
