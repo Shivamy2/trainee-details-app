@@ -9,6 +9,29 @@ import { AppContext } from "./context";
 
 const App = () => {
   const [userData, setUserData] = useState(data || []);
+
+  // reducer for various actions
+  const dispatchEvent = (action, payload) => {
+    switch (action) {
+      case "STORE_DATA": {
+        localStorage.setItem("data", JSON.stringify(payload));
+        setUserData(payload);
+        return;
+      }
+      case "CHANGE_PROJ_ALLOCATION": {
+        const { index, value } = payload;
+        const data = [...userData];
+        data[index - 1].projAlc = value;
+        setUserData(data);
+        localStorage.setItem("data", JSON.stringify(data));
+        return;
+      }
+      default:
+        return;
+    }
+  };
+
+  // generic function for extracting frontend and backend trainees from locastorage
   const extractTechStack = useCallback(
     (tech) =>
       filter(userData, (item) => {
@@ -16,8 +39,11 @@ const App = () => {
       }),
     [userData]
   );
+
   const frontendData = extractTechStack("frontend");
   const backendData = extractTechStack("backend");
+
+  // extracting the trainees who have been allocated in any project
   const projAllocated = useMemo(
     () =>
       filter(userData, (item) => {
@@ -26,27 +52,13 @@ const App = () => {
     [userData]
   );
 
-  const dispatchEvent = (action, payload) => {
-    switch (action) {
-      case "CHANGE_PROJ_ALLOCATION": {
-        const { index, value } = payload;
-        const data = [...userData];
-        data[index - 1].projAlc = value;
-        setUserData(data);
-        return;
-      }
-      default:
-        return;
-    }
-  };
-
+  // storing the dummy data in localStorage if somehow data is removed from there.
   useEffect(() => {
     if (!data) {
       axios
         .get("./modal.json")
         .then((res) => {
-          localStorage.setItem("data", JSON.stringify(res.data));
-          setUserData(res.data);
+          dispatchEvent("STORE_DATA", res.data);
         })
         .catch((err) => console.error(err));
     }

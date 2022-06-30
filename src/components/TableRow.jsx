@@ -4,7 +4,7 @@ import { BsDownload } from "react-icons/bs";
 import { Form } from "react-bootstrap";
 import { AppContext } from "../context";
 
-const TableRow = ({ data, sno, className }) => {
+const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
   const { dispatchEvent } = useContext(AppContext);
   const handleProjectAllocation = (event) => {
     if (
@@ -39,22 +39,27 @@ const TableRow = ({ data, sno, className }) => {
         </Form.Select>
       </td>
       <td>
-        <textarea
+        <div
           className="table__textarea"
+          contentEditable
           onKeyDown={(event) => {
             if (event.key === "Enter") console.log("Enter pressed");
           }}
-          placeholder="NA"
-          name=""
-          id=""
-          cols="20"
-          rows="1"
-          //   value={data.comment}
         />
       </td>
       <td>
-        <AiFillInfoCircle color="green" size={18} className="cursor-event" />
-        {data?.projAlc === "1" && (data?.type === "frontend" ? "(FE)" : "(BE)")}
+        <AiFillInfoCircle
+          size={18}
+          className="table-row__icon"
+          onClick={() => {
+            setModalOpen(true);
+            setClickedSkill(sno);
+          }}
+        />
+        <span>
+          {data?.projAlc === "1" &&
+            (data?.type === "frontend" ? "(FE)" : "(BE)")}
+        </span>
       </td>
       <td>
         <a
@@ -65,7 +70,7 @@ const TableRow = ({ data, sno, className }) => {
           }
           download
         >
-          <BsDownload color="blue" size={20} />
+          <BsDownload size={20} className="table-row__icon" />
         </a>
       </td>
     </tr>

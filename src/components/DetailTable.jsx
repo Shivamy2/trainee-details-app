@@ -1,12 +1,17 @@
 import { memo, useEffect, useRef, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { tableHeadings } from "../constants/constant";
+import Modal from "./Modal";
+import Skills from "./Skills";
 import TableRow from "./TableRow";
 
 const DetailTable = ({ className, data, title }) => {
   const headingValues = tableHeadings;
+  const [modalOpen, setModalOpen] = useState(false);
+  const [clickedSkill, setClickedSkill] = useState();
   const [tableHeight, setTableHeight] = useState();
   const tableRef = useRef(null);
+  const traineeInModal = data?.[clickedSkill];
   useEffect(() => {
     let tableBodyHeight = 0;
     let children = tableRef.current?.childNodes;
@@ -18,7 +23,24 @@ const DetailTable = ({ className, data, title }) => {
   }, [data?.length]);
   return (
     <div className={className}>
-      <h2 className="text-primary fw-bold fs-3 ms-2">{title}</h2>
+      {modalOpen && (
+        <Modal setModalOpen={setModalOpen}>
+          <div>
+            <h3>Skills</h3>
+            <div>
+              <Skills
+                title={"Professional"}
+                data={traineeInModal?.skills?.professional}
+              />
+              <Skills
+                title={"Technical"}
+                data={traineeInModal?.skills?.technical}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
+      <h2 className="detail-table__title fw-bold fs-3 ms-2">{title}</h2>
       <div className="table__styling">
         <Table
           striped
@@ -26,7 +48,7 @@ const DetailTable = ({ className, data, title }) => {
           hover
           className="text-center table__styling__style"
         >
-          <thead className="detail-table__heading bg-danger border-danger text-white table__styling__row">
+          <thead className="text-white table__styling__row detail-table__heading">
             <tr>
               {headingValues?.map((item, index) => (
                 <th key={index}>{item}</th>
@@ -44,6 +66,8 @@ const DetailTable = ({ className, data, title }) => {
               data?.map((item, index) => (
                 <TableRow
                   className={"table__styling__row"}
+                  setModalOpen={setModalOpen}
+                  setClickedSkill={setClickedSkill}
                   key={index}
                   data={item}
                   sno={index}
