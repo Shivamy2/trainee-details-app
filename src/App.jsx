@@ -1,27 +1,23 @@
 import "./App.css";
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { data } from "./constants/constant";
 import DetailTable from "./components/DetailTable";
 import NavBar from "./components/NavBar";
 import { filter } from "lodash";
+import { AppContext } from "./context";
 
 const App = () => {
   const [userData, setUserData] = useState(data || []);
-  const frontendData = useMemo(
-    () =>
+  const extractTechStack = useCallback(
+    (tech) =>
       filter(userData, (item) => {
-        return item.projAlc === "0" && item.type === "frontend";
+        return item.projAlc === "0" && item.type === tech;
       }),
     [userData]
   );
-  const backendData = useMemo(
-    () =>
-      filter(userData, (item) => {
-        return item.projAlc === "0" && item.type === "backend";
-      }),
-    [userData]
-  );
+  const frontendData = extractTechStack("frontend");
+  const backendData = extractTechStack("backend");
   const projAllocated = useMemo(
     () =>
       filter(userData, (item) => {
@@ -29,13 +25,26 @@ const App = () => {
       }),
     [userData]
   );
-  console.log("details", frontendData, backendData, projAllocated);
+
+  const dispatchEvent = (action, payload) => {
+    switch (action) {
+      case "CHANGE_PROJ_ALLOCATION": {
+        const { index, value } = payload;
+        const data = [...userData];
+        data[index - 1].projAlc = value;
+        setUserData(data);
+        return;
+      }
+      default:
+        return;
+    }
+  };
+
   useEffect(() => {
     if (!data) {
       axios
         .get("./modal.json")
         .then((res) => {
-          console.log(res.data);
           localStorage.setItem("data", JSON.stringify(res.data));
           setUserData(res.data);
         })
@@ -44,7 +53,7 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <AppContext.Provider value={{ userData, dispatchEvent }}>
       <div className="site-navbar">
         <NavBar className={"mb-4 mt-0 site-width mx-auto"} />
       </div>
@@ -57,7 +66,7 @@ const App = () => {
           className="mt-5"
         />
       </div>
-    </div>
+    </AppContext.Provider>
   );
 };
 

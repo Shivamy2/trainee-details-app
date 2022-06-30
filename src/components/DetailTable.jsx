@@ -5,17 +5,17 @@ import TableRow from "./TableRow";
 
 const DetailTable = ({ className, data, title }) => {
   const headingValues = tableHeadings;
-  const [tableHeight, setTableHeight] = useState(200);
+  const [tableHeight, setTableHeight] = useState();
   const tableRef = useRef(null);
   useEffect(() => {
     let tableBodyHeight = 0;
     let children = tableRef.current?.childNodes;
-    for (var i = 0; i < 5; ++i) {
+    for (var i = 0; i < data.length; ++i) {
+      if (i >= 5) break;
       tableBodyHeight += children[i]?.clientHeight;
     }
-    setTableHeight(tableBodyHeight);
-  }, []);
-  console.log("table height", tableHeight);
+    setTableHeight(tableBodyHeight + 2);
+  }, [data?.length]);
   return (
     <div className={className}>
       <h2 className="text-primary fw-bold fs-3 ms-2">{title}</h2>
@@ -37,7 +37,7 @@ const DetailTable = ({ className, data, title }) => {
             ref={tableRef}
             className="detail-table__body"
             style={{
-              height: `${tableHeight}px`,
+              height: `${tableHeight === 2 ? 56 : tableHeight}px`,
             }}
           >
             {data?.length > 0 ? (
