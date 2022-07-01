@@ -25,7 +25,7 @@ const DetailTable = ({ className, data, title }) => {
   return (
     <div className={className}>
       {modalOpen && (
-        <Modal setModalOpen={setModalOpen}>
+        <Modal showClose={true} setModalOpen={setModalOpen}>
           <div>
             <h3 className="fw-bold text-uppercase modal__heading">Skills</h3>
             <em>{traineeInModal?.name}</em>

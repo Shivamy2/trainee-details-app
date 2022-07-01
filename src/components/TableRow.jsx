@@ -1,11 +1,17 @@
-import { memo, useContext } from "react";
+import { memo, useContext, useState } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
 import { Form } from "react-bootstrap";
 import { AppContext } from "../context";
+import Modal from "./Modal";
 
 const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
   const { dispatchEvent } = useContext(AppContext);
+  const [comment, setComment] = useState(data?.comment);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
   const handleProjectAllocation = (event) => {
     if (
       window.confirm(
@@ -24,6 +30,15 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <Modal showClose={false}>
+        <div>Saving...</div>
+      </Modal>
+    );
+  }
+
   return (
     <tr className={className}>
       <td>{sno + 1}</td>
@@ -39,11 +54,21 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
         </Form.Select>
       </td>
       <td>
-        <div
-          className="table__textarea"
-          contentEditable
+        <input
+          onChange={handleCommentChange}
+          value={comment}
+          placeholder={"NA"}
+          type={"textarea"}
+          className="table__comment"
           onKeyDown={(event) => {
-            if (event.key === "Enter") console.log("Enter pressed");
+            if (event.key === "Enter") {
+              setIsLoading(true);
+              setTimeout(() => setIsLoading(false), 2000);
+              dispatchEvent("UPDATE_COMMENT", {
+                index: data?.id,
+                value: comment,
+              });
+            }
           }}
         />
       </td>

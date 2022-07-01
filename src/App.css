@@ -33,6 +33,10 @@
     /* width: calc(100% + 17px); */
 }
 
+.detail-table__body>tr>td {
+    vertical-align: middle;
+}
+
 .navbar-heading {
     height: 10vh;
 }
@@ -65,11 +69,12 @@
     table-layout: fixed;
 }
 
-.table__textarea {
+.table__comment {
+    text-align: center;
+    width: 100%;
     outline: none;
     border: none;
     background-color: transparent;
-    resize: none;
 }
 
 .modal-body {

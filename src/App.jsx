@@ -10,6 +10,14 @@ import { AppContext } from "./context";
 const App = () => {
   const [userData, setUserData] = useState(data || []);
 
+  const updateTraineeData = (payload, key) => {
+    const { index, value } = payload;
+    const data = [...userData];
+    data[index - 1][key] = value;
+    setUserData(data);
+    localStorage.setItem("data", JSON.stringify(data));
+  };
+
   // reducer for various actions
   const dispatchEvent = (action, payload) => {
     switch (action) {
@@ -19,11 +27,11 @@ const App = () => {
         return;
       }
       case "CHANGE_PROJ_ALLOCATION": {
-        const { index, value } = payload;
-        const data = [...userData];
-        data[index - 1].projAlc = value;
-        setUserData(data);
-        localStorage.setItem("data", JSON.stringify(data));
+        updateTraineeData(payload, "projAlc");
+        return;
+      }
+      case "UPDATE_COMMENT": {
+        updateTraineeData(payload, "comment");
         return;
       }
       default:
