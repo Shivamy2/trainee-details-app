@@ -54,6 +54,7 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
           onClick={() => {
             setModalOpen(true);
             setClickedSkill(sno);
+            document.body.style.overflow = "hidden";
           }}
         />
         <span>

@@ -74,15 +74,27 @@
 
 .modal-body {
     transform: translate(-50%, -50%);
-    /* height: 500px; */
-    /* max-height: 500px; */
-    /* width: 750px; */
-    max-width: 750px;
 }
 
 .modal-body__icon {
     color: var(--primary);
     cursor: pointer;
+}
+
+.modal__heading {
+    color: var(--primary);
+}
+
+.modal-overlay {
+    z-index: 999;
+}
+
+.skill__title {
+    color: var(--on-primary);
+}
+
+.skill__list {
+    font-size: 0.8rem;
 }
 
 @media only screen and (min-width: 768px) {
@@ -91,5 +103,8 @@
     }
     .detail-table__body {
         font-size: 0.9rem;
+    }
+    .skill__list {
+        font-size: 1rem;
     }
 }

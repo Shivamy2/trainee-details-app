@@ -21,13 +21,15 @@ const DetailTable = ({ className, data, title }) => {
     }
     setTableHeight(tableBodyHeight + 2);
   }, [data?.length]);
+
   return (
     <div className={className}>
       {modalOpen && (
         <Modal setModalOpen={setModalOpen}>
           <div>
-            <h3>Skills</h3>
-            <div>
+            <h3 className="fw-bold text-uppercase modal__heading">Skills</h3>
+            <em>{traineeInModal?.name}</em>
+            <div className="mt-4">
               <Skills
                 title={"Professional"}
                 data={traineeInModal?.skills?.professional}

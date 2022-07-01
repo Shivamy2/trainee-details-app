@@ -62,7 +62,7 @@ const App = () => {
         })
         .catch((err) => console.error(err));
     }
-  }, []);
+  }, []); //eslint-disable-line
 
   return (
     <AppContext.Provider value={{ userData, dispatchEvent }}>
