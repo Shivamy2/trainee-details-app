@@ -55,6 +55,7 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
       </td>
       <td>
         <input
+          enterKeyHint="send"
           onChange={handleCommentChange}
           value={comment}
           placeholder={"NA"}
