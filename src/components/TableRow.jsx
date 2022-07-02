@@ -1,4 +1,4 @@
-import { memo, useContext, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
 import { Form } from "react-bootstrap";
@@ -9,6 +9,10 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
   const { dispatchEvent } = useContext(AppContext);
   const [comment, setComment] = useState(data?.comment);
   const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    console.log("Rerendering table row");
+    setComment(data?.comment);
+  }, [data]);
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
@@ -31,76 +35,79 @@ const TableRow = ({ data, sno, className, setModalOpen, setClickedSkill }) => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Modal showClose={false}>
-        <div>Saving...</div>
-      </Modal>
-    );
-  }
-
   return (
-    <tr className={className}>
-      <td>{sno + 1}</td>
-      <td>{data.name}</td>
-      <td>
-        <Form.Select
-          value={data?.projAlc === "1" ? "1" : "0"}
-          className={"w-75 mx-auto"}
-          onChange={handleProjectAllocation}
-        >
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </Form.Select>
-      </td>
-      <td>
-        <input
-          enterKeyHint="send"
-          onChange={handleCommentChange}
-          value={comment}
-          placeholder={"NA"}
-          type={"textarea"}
-          className="table__comment"
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              setIsLoading(true);
-              setTimeout(() => setIsLoading(false), 2000);
-              dispatchEvent("UPDATE_COMMENT", {
-                index: data?.id,
-                value: comment,
-              });
+    <>
+      {isLoading && (
+        <Modal showClose={false}>
+          <div>Saving...</div>
+        </Modal>
+      )}
+      <tr className={className}>
+        <td>{sno + 1}</td>
+        <td>{data.name}</td>
+        <td>
+          <Form.Select
+            value={data?.projAlc === "1" ? "1" : "0"}
+            className={"w-75 mx-auto"}
+            onChange={handleProjectAllocation}
+          >
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </Form.Select>
+        </td>
+        <td>
+          <input
+            enterKeyHint="send"
+            onChange={handleCommentChange}
+            value={comment}
+            placeholder={"Type here..."}
+            type={"textarea"}
+            className="table__comment"
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                setIsLoading(true);
+                document.body.style.overflow = "hidden";
+                setTimeout(() => {
+                  setIsLoading(false);
+                  document.body.style.overflow = "scroll";
+                }, 2000);
+                dispatchEvent("UPDATE_COMMENT", {
+                  index: data?.id,
+                  value: comment,
+                });
+              }
+            }}
+          />
+        </td>
+        <td>
+          <AiFillInfoCircle
+            size={18}
+            className="table-row__icon"
+            onClick={() => {
+              setModalOpen(true);
+              setClickedSkill(sno);
+              document.body.style.overflow = "hidden";
+            }}
+          />
+          <span>
+            {data?.projAlc === "1" &&
+              (data?.type === "frontend" ? "(FE)" : "(BE)")}
+          </span>
+        </td>
+        <td>
+          <a
+            href={data?.resume}
+            target={"popup"}
+            onClick={() =>
+              window.open(data?.resume, "name", "width=1000,height=600")
             }
-          }}
-        />
-      </td>
-      <td>
-        <AiFillInfoCircle
-          size={18}
-          className="table-row__icon"
-          onClick={() => {
-            setModalOpen(true);
-            setClickedSkill(sno);
-            document.body.style.overflow = "hidden";
-          }}
-        />
-        <span>
-          {data?.projAlc === "1" &&
-            (data?.type === "frontend" ? "(FE)" : "(BE)")}
-        </span>
-      </td>
-      <td>
-        <a
-          href={data?.resume}
-          target={"popup"}
-          onClick={() =>
-            window.open(data?.resume, "name", "width=1000,height=600")
-          }
-          download
-        >
-          <BsDownload size={20} className="table-row__icon" />
-        </a>
-      </td>
-    </tr>
+            download
+          >
+            <BsDownload size={20} className="table-row__icon" />
+          </a>
+        </td>
+      </tr>
+    </>
   );
 };
 

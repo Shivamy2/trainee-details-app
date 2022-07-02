@@ -15,6 +15,7 @@ const App = () => {
     const data = [...userData];
     data[index - 1][key] = value;
     setUserData(data);
+    console.log("Data", userData);
     localStorage.setItem("data", JSON.stringify(data));
   };
 
