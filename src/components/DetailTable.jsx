@@ -17,8 +17,10 @@ const DetailTable = ({ className, data, title }) => {
     let children = tableRef.current?.childNodes;
     for (var i = 0; i < data.length; ++i) {
       if (i >= 5) break;
+      console.log(children[i]?.clientHeight);
       tableBodyHeight += children[i]?.clientHeight;
     }
+    console.log("Table body height", tableBodyHeight);
     setTableHeight(tableBodyHeight + 2);
   }, [data?.length]);
 
