@@ -18,7 +18,8 @@ const DetailTable = ({ className, data, title }) => {
     for (var i = 0; i < data.length; ++i) {
       if (i >= 5) break;
       console.log(children[i]?.clientHeight);
-      tableBodyHeight += children[i]?.clientHeight;
+      // tableBodyHeight += children[i]?.clientHeight;
+      tableBodyHeight += 56;
     }
     console.log("Table body height", tableBodyHeight);
     setTableHeight(tableBodyHeight + 2);
